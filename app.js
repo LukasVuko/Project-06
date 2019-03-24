@@ -29,7 +29,7 @@ const phrases = [
 
 function getRandomPhraseAsArray(arr) {
   const randomPhrase = arr[Math.floor(Math.random() * arr.length)];
-  const split = randomPhrase.split(" "); // Returns ["Hotdogs", "are", "sandwiches"]
+  const split = randomPhrase.split(""); // Returns ["Hotdogs", "are", "sandwiches"]
   return split;
 }
 
@@ -38,8 +38,15 @@ function getRandomPhraseAsArray(arr) {
 function addPhraseToDisplay(arr) {
   const array = getRandomPhraseAsArray(arr);
   const ul = document.querySelector("#phrase ul");
-  for (let i = 0; i <= array.length; i++) {
+  for (let i = 0; i < array.length; i += 1) {
     let add = array[i];
-    ul.appendChild(add);
+    let addLi = document.createElement("li");
+    if (add !== " ") {
+      addLi.className = "letter";
+    } else {
+      addLi.className = "space";
+    }
+    addLi.textContent = add;
+    ul.appendChild(addLi);
   }
 }
