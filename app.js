@@ -54,6 +54,7 @@ function addPhraseToDisplay(arr) {
 
 // Create a checkLetter function
 // Loops through alphabet list items, if leter matches the letter clicked, class 'show' is added to letter
+// Once loop runs, counter is used to determine where function returns the letter, or null
 
 function checkLetter(button) {
   const letter = document.getElementsByClassName("letter");
@@ -63,15 +64,15 @@ function checkLetter(button) {
       letter[i].textContent.toLowerCase() === button.textContent.toLowerCase()
     ) {
       letter[i].className += " show";
-      returnedLetter = button.textContent;
     } else {
       counter += 1;
     }
   }
   if (counter === 12) {
-    return null;
+    return "null";
   } else {
-    console.log(button.textContent.toLowerCase());
+    let lowerCaseReturn = button.textContent.toLowerCase();
+    return lowerCaseReturn;
   }
 }
 
@@ -84,6 +85,7 @@ log.addEventListener("click", e => {
   if (buttonClick.tagName === "BUTTON") {
     buttonClick.className = "chosen";
     buttonClick.disabled = true;
-    checkLetter(buttonClick);
+    let letterFound = checkLetter(buttonClick);
+    console.log(letterFound);
   }
 });
