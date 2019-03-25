@@ -3,7 +3,7 @@ const qwerty = document.getElementById("qwert");
 // Get the element with the ID of phrase and save it to a variable.
 const phrase = document.getElementById("phrase");
 // Create a missed variable, initialized to 0
-const missed = 0;
+let missed = 0;
 // Attach a event listener to the “Start Game” button to hide the start screen overlay
 const overlay = document.getElementById("overlay");
 const buttonStart = document.getElementsByClassName("btn__reset")[0];
@@ -68,8 +68,8 @@ function checkLetter(button) {
       counter += 1;
     }
   }
-  if (counter === 12) {
-    return "null";
+  if (counter === letter.length) {
+    return null;
   } else {
     let lowerCaseReturn = button.textContent.toLowerCase();
     return lowerCaseReturn;
@@ -77,15 +77,40 @@ function checkLetter(button) {
 }
 
 // Add an event listener to the keyboard
+const keyboard = document.getElementById("qwerty");
 
-const log = document.getElementById("qwerty");
-
-log.addEventListener("click", e => {
+keyboard.addEventListener("click", e => {
   let buttonClick = e.target;
   if (buttonClick.tagName === "BUTTON") {
     buttonClick.className = "chosen";
     buttonClick.disabled = true;
     let letterFound = checkLetter(buttonClick);
-    console.log(letterFound);
+    if (letterFound === null) {
+      missed += 1;
+      let trie0 = document.getElementsByClassName("tries")[0];
+      let ol = trie0.parentElement;
+      ol.removeChild(trie0);
+    }
+    checkWin();
   }
 });
+
+function checkWin() {
+  const show = document.getElementsByClassName("show");
+  const showCount = show.length;
+  const letters = document.getElementsByClassName("letter");
+  const lettersCount = letters.length;
+  if (showCount === lettersCount) {
+    overlay.className = "win";
+    const win = document.createElement("span");
+    win.textContent = "You won!";
+    overlay.appendChild(win);
+    overlay.style.display = "";
+  } else if (missed >= 5) {
+    overlay.className = "lose";
+    const loss = document.createElement("span");
+    loss.textContent = "You lost!";
+    overlay.appendChild(loss);
+    overlay.style.display = "";
+  }
+}
