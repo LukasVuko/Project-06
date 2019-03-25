@@ -10,6 +10,7 @@ const buttonStart = document.getElementsByClassName("btn__reset")[0];
 
 buttonStart.addEventListener("click", () => {
   overlay.style.display = "none";
+  addPhraseToDisplay(phrases);
 });
 
 // Create a phrases array that contains at least 5 different phrases as strings.
@@ -50,3 +51,34 @@ function addPhraseToDisplay(arr) {
     ul.appendChild(addLi);
   }
 }
+
+// Create a checkLetter function
+// Loops through alphabet list items, if leter matches the letter clicked, class 'show' is added to letter
+
+function checkLetter(clicked) {
+  const letter = document.getElementsByClassName("letter");
+  for (let i = 0; i < letter.length; i += 1) {
+    if (
+      letter[i].textContent.toUpperCase() === clicked.textContent.toUpperCase()
+    ) {
+      letter[i].className += " show";
+      return clicked.textContent;
+    } else {
+      return null;
+    }
+  }
+}
+
+// Add an event listener to the keyboard
+
+const log = document.getElementById("qwerty");
+
+log.addEventListener("click", e => {
+  let clicked = e.target;
+  if (clicked.tagName === "BUTTON") {
+    console.log(clicked);
+    clicked.className = "chosen";
+    clicked.disabled = true;
+    checkLetter(clicked);
+  }
+});
