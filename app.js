@@ -55,17 +55,23 @@ function addPhraseToDisplay(arr) {
 // Create a checkLetter function
 // Loops through alphabet list items, if leter matches the letter clicked, class 'show' is added to letter
 
-function checkLetter(clicked) {
+function checkLetter(button) {
   const letter = document.getElementsByClassName("letter");
+  let counter = 0;
   for (let i = 0; i < letter.length; i += 1) {
     if (
-      letter[i].textContent.toUpperCase() === clicked.textContent.toUpperCase()
+      letter[i].textContent.toLowerCase() === button.textContent.toLowerCase()
     ) {
       letter[i].className += " show";
-      return clicked.textContent;
+      returnedLetter = button.textContent;
     } else {
-      return null;
+      counter += 1;
     }
+  }
+  if (counter === 12) {
+    return null;
+  } else {
+    console.log(button.textContent.toLowerCase());
   }
 }
 
@@ -74,11 +80,10 @@ function checkLetter(clicked) {
 const log = document.getElementById("qwerty");
 
 log.addEventListener("click", e => {
-  let clicked = e.target;
-  if (clicked.tagName === "BUTTON") {
-    console.log(clicked);
-    clicked.className = "chosen";
-    clicked.disabled = true;
-    checkLetter(clicked);
+  let buttonClick = e.target;
+  if (buttonClick.tagName === "BUTTON") {
+    buttonClick.className = "chosen";
+    buttonClick.disabled = true;
+    checkLetter(buttonClick);
   }
 });
