@@ -19,7 +19,7 @@ const phrases = [
   "Hotdogs are sandwiches",
   "Poptarts are ravioli",
   "No pain no gain",
-  "Supercalifragilisticexpialidocious",
+  "Hello world",
   "My name is Jeff"
 ];
 
@@ -100,17 +100,34 @@ function checkWin() {
   const showCount = show.length;
   const letters = document.getElementsByClassName("letter");
   const lettersCount = letters.length;
+  const buttonReset = document.getElementsByClassName("btn__reset")[0];
   if (showCount === lettersCount) {
     overlay.className = "win";
     const win = document.createElement("span");
     win.textContent = "You won!";
     overlay.appendChild(win);
+    buttonReset.textContent = "Play Again";
     overlay.style.display = "";
   } else if (missed >= 5) {
     overlay.className = "lose";
     const loss = document.createElement("span");
     loss.textContent = "You lost!";
     overlay.appendChild(loss);
+    buttonReset.textContent = "Play Again";
     overlay.style.display = "";
   }
+}
+
+function destroyAndCreateKeyboard() {
+  const mainContainer = document.getElementsByClassName("main-container")[0];
+  const scorebaord = document.getElementById("scoreboard");
+  const qwertyDiv = document.getElementById("qwerty");
+  const qwerty = document.createElement("div");
+  qwerty.setAttribute("id", "qwerty");
+  qwerty.setAttribute("class", "section");
+  const qwertyHTML =
+    '<div class="keyrow"><button>q</button><button>w</button><button>e</button><button>r</button><button>t</button><button>y</button><button>u</button><button>i</button><button>o</button><button>p</button></div><div class="keyrow"><button>a</button><button>s</button><button>d</button><button>f</button><button>g</button><button>h</button><button>j</button><button>k</button><button>l</button></div><div class="keyrow"><button>z</button><button>x</button><button>c</button><button>v</button><button>b</button><button>n</button><button>m</button></div>';
+  qwerty.innerHTML = qwertyHTML;
+  mainContainer.removeChild(qwertyDiv);
+  mainContainer.insertBefore(qwerty, scoreboard);
 }
