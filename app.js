@@ -9,7 +9,13 @@ const overlay = document.getElementById("overlay");
 const buttonStart = document.getElementsByClassName("btn__reset")[0];
 
 buttonStart.addEventListener("click", () => {
+  removeSpan();
+  createFiveLivesOl();
+  missed = 0;
   overlay.style.display = "none";
+  removePhrase();
+  removeAndCreateKeyboard();
+  addKeyboardListener();
   addPhraseToDisplay(phrases);
 });
 
@@ -77,23 +83,25 @@ function checkLetter(button) {
 }
 
 // Add an event listener to the keyboard
-const keyboard = document.getElementById("qwerty");
+function addKeyboardListener() {
+  const keyboard = document.getElementById("qwerty");
 
-keyboard.addEventListener("click", e => {
-  let buttonClick = e.target;
-  if (buttonClick.tagName === "BUTTON") {
-    buttonClick.className = "chosen";
-    buttonClick.disabled = true;
-    let letterFound = checkLetter(buttonClick);
-    if (letterFound === null) {
-      missed += 1;
-      let trie0 = document.getElementsByClassName("tries")[0];
-      let ol = trie0.parentElement;
-      ol.removeChild(trie0);
+  keyboard.addEventListener("click", e => {
+    let buttonClick = e.target;
+    if (buttonClick.tagName === "BUTTON") {
+      buttonClick.className = "chosen";
+      buttonClick.disabled = true;
+      let letterFound = checkLetter(buttonClick);
+      if (letterFound === null) {
+        missed += 1;
+        let trie0 = document.getElementsByClassName("tries")[0];
+        let ol = trie0.parentElement;
+        ol.removeChild(trie0);
+      }
+      checkWin();
     }
-    checkWin();
-  }
-});
+  });
+}
 
 function checkWin() {
   const show = document.getElementsByClassName("show");
@@ -118,7 +126,7 @@ function checkWin() {
   }
 }
 
-function destroyAndCreateKeyboard() {
+function removeAndCreateKeyboard() {
   const mainContainer = document.getElementsByClassName("main-container")[0];
   const scorebaord = document.getElementById("scoreboard");
   const qwertyDiv = document.getElementById("qwerty");
@@ -130,4 +138,62 @@ function destroyAndCreateKeyboard() {
   qwerty.innerHTML = qwertyHTML;
   mainContainer.removeChild(qwertyDiv);
   mainContainer.insertBefore(qwerty, scoreboard);
+}
+
+function removePhrase() {
+  const phraseDiv = document.getElementById("phrase");
+  const ul = phraseDiv.firstElementChild;
+  const li = ul.children;
+  const length = li.length;
+  for (let i = 0; i < length; i += 1) {
+    ul.removeChild(li[0]);
+  }
+}
+
+function removeLives() {
+  const scoreboard = document.getElementById("scoreboard");
+  const ol = scoreboard.firstElementChild;
+
+  // function  createFiveLivesOl() {
+  //     const img = document.createElement('img');
+  //     img.setAttribute('width', '30px');
+  //     img.setAttribute('height', 35px);
+  //     img.setAttribute('src', "images/liveHeart.png");
+  //     const li = document.createElement('li');
+  //     li.appendChild(img);
+  //     li.setAttribute('class', 'tries');
+  //     const addOl = document.createElement('ol');
+  //     for (let i = 0; i < 5; i += 1) {
+  //         addOl.appendChild(li);
+  //     }
+}
+
+function createFiveLivesOl() {
+  const scoreboard = document.getElementById("scoreboard");
+  const ol = scoreboard.firstElementChild;
+  const addOl = document.createElement("ol");
+
+  scoreboard.removeChild(ol);
+
+  for (let i = 0; i < 5; i += 1) {
+    const img = document.createElement("img");
+    img.setAttribute("width", "30px");
+    img.setAttribute("height", "35px");
+    img.setAttribute("src", "images/liveHeart.png");
+
+    const li = document.createElement("li");
+    li.appendChild(img);
+    li.setAttribute("class", "tries");
+
+    addOl.appendChild(li);
+  }
+  scoreboard.appendChild(addOl);
+}
+
+function removeSpan() {
+  const overlay = document.getElementById("overlay");
+  const span = overlay.lastElementChild;
+  if (span.tagName === "SPAN") {
+    span.parentNode.removeChild(span);
+  }
 }
